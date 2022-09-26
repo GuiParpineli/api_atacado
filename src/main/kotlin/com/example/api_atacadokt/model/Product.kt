@@ -9,6 +9,7 @@ data class Product(
     val id: Long? = null,
     var name: String = "",
     var ncm: String = "",
+    var category: String = "",
     var inventory: Int = 0,
     var pricePurchase: Double = 0.0,
     var price: Double = 0.0,
