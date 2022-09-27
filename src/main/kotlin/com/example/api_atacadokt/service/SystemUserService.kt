@@ -2,11 +2,12 @@ package com.example.api_atacadokt.service
 
 import com.example.api_atacadokt.model.SystemUser
 import com.example.api_atacadokt.repository.SystemUserRepository
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class SystemUserService(val repository: SystemUserRepository) {
+class SystemUserService(val repository: SystemUserRepository) : UserDetailsService {
 
     fun getAll(): List<SystemUser> {
         return repository.findAll()
@@ -28,7 +29,7 @@ class SystemUserService(val repository: SystemUserRepository) {
         return repository.deleteById(id)
     }
 
-    fun findByUsername(username: String): Optional<SystemUser> {
-        return repository.findByUsername(username)
+    override fun loadUserByUsername(username: String): SystemUser {
+        return repository.findByUsername(username);
     }
 }

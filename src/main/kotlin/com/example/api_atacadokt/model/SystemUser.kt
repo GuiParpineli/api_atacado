@@ -2,29 +2,28 @@ package com.example.api_atacadokt.model
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size
-import org.jetbrains.annotations.NotNull
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
 @Entity
-class SystemUser : UserDetails {
+data class SystemUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
-    var jwt: String = ""
-    var name: String = ""
+    val id: Long? = null,
+    var jwt: String = "",
+    var name: String = "",
+    private var username: String = "",
 
     @Column(nullable = false, unique = true)
-    var email: String = ""
+    var email: String = "",
 
     @Size(min = 4, max = 8)
-    private var password: String = ""
+    private var password: String = "",
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     var systemUserRole: SystemUserRoles? = null
-
+) : UserDetails {
     override fun getAuthorities(): MutableSet<SimpleGrantedAuthority> {
         val grantedAuthority: SimpleGrantedAuthority = SimpleGrantedAuthority(systemUserRole!!.name)
         return Collections.singleton(grantedAuthority)
@@ -35,9 +34,16 @@ class SystemUser : UserDetails {
         return this.password;
     }
 
-    //
     override fun getUsername(): String {
         return this.username
+    }
+
+    fun setPassword(value: String) {
+        this.password = value
+    }
+
+    fun setUsername(value: String) {
+        this.username = value
     }
 
     //

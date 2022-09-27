@@ -11,14 +11,14 @@ import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 @Component
 class JwtUtil {
 
-    val SECRET_KEY = "2uhasg@hgas/ASJ2-9"
+    val secretKey = "2uhasg@hgas/ASJ2-9"
 
     fun extractUserName(token: String): String = extractClaimUsername(token)
 
     fun extractExpiration(token: String): Date = extractClaimDate(token)
 
     fun extractClaimDate(token: String): Date {
-        var claims: Claims = extractAllClaims(token)
+        val claims: Claims = extractAllClaims(token)
         return claims.expiration
     }
 
@@ -29,7 +29,7 @@ class JwtUtil {
 
     fun extractAllClaims(token: String): Claims {
         return Jwts.parserBuilder()
-            .setSigningKey(SECRET_KEY)
+            .setSigningKey(secretKey)
             .build()
             .parseClaimsJws(token)
             .body
@@ -47,7 +47,7 @@ class JwtUtil {
             .setSubject(subject)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + 8640000))
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact()
+            .signWith(SignatureAlgorithm.HS256, secretKey).compact()
     }
 
     fun validateToken(token: String, userDetails: UserDetails): Boolean {
