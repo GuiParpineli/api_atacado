@@ -1,4 +1,4 @@
-package com.example.api_atacadokt.controller
+package com.example.api_atacadokt.model.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 

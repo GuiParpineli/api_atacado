@@ -1,6 +1,7 @@
 package com.example.api_atacadokt.controller
 
 import com.example.api_atacadokt.model.Customer
+import com.example.api_atacadokt.model.dto.CustomerDTO
 import com.example.api_atacadokt.service.CustomerService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
