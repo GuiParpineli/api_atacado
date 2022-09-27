@@ -48,6 +48,11 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-noarg</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -106,6 +111,11 @@
                         <plugin>spring</plugin>
                         <plugin>jpa</plugin>
                     </compilerPlugins>
+                    <pluginOptions>
+            <option>no-arg:annotation=com.my.Annotation</option>
+            <!-- Call instance initializers in the synthetic constructor -->
+            <!-- <option>no-arg:invokeInitializers=true</option> -->
+        </pluginOptions>
                 </configuration>
                 <dependencies>
                     <dependency>

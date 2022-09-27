@@ -11,7 +11,7 @@ import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 @Component
 class JwtUtil {
 
-    val secretKey = "2uhasg@hgas/ASJ2-9"
+    val secretKey = "secrhdfjhsdfoiuoadflsdagasdlkslkdklsaaaaaaaaaaaaaaaaaaat"
 
     fun extractUserName(token: String): String = extractClaimUsername(token)
 

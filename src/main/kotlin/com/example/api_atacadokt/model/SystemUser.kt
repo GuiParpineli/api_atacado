@@ -11,58 +11,53 @@ data class SystemUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    var jwt: String = "",
+    var jwt: String? = "",
     var name: String = "",
     private var username: String = "",
-
     @Column(nullable = false, unique = true)
     var email: String = "",
 
-    @Size(min = 4, max = 8)
+    @Size(min = 3, max = 8)
     private var password: String = "",
 
     @Enumerated(EnumType.STRING)
     var systemUserRole: SystemUserRoles? = null
 ) : UserDetails {
+    constructor(jwt: String) : this(){
+        this.jwt = jwt
+    }
+
     override fun getAuthorities(): MutableSet<SimpleGrantedAuthority> {
-        val grantedAuthority: SimpleGrantedAuthority = SimpleGrantedAuthority(systemUserRole!!.name)
+        val grantedAuthority = SimpleGrantedAuthority(systemUserRole!!.name)
         return Collections.singleton(grantedAuthority)
     }
 
     //
     override fun getPassword(): String {
-        return this.password;
+        return this.password
     }
 
     override fun getUsername(): String {
         return this.username
     }
 
-    fun setPassword(value: String) {
-        this.password = value
-    }
-
-    fun setUsername(value: String) {
-        this.username = value
-    }
-
     //
     override fun isAccountNonExpired(): Boolean {
-        return true;
+        return true
     }
 
     //
     override fun isAccountNonLocked(): Boolean {
-        return true;
+        return true
     }
 
     //
     override fun isCredentialsNonExpired(): Boolean {
-        return true;
+        return true
     }
 
     //
     override fun isEnabled(): Boolean {
-        return true;
+        return true
     }
 }

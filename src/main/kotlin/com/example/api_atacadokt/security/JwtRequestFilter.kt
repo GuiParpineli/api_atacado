@@ -19,19 +19,19 @@ class JwtRequestFilter(val userService: SystemUserService, val jwtUtil: JwtUtil)
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val authorizationHeader = request.getHeader("Authorization")
-        var username =""
-        var jwt = ""
+        val authorizationHeader : String? = request.getHeader("Authorization")
+        var username: String? = null
+        var jwt : String? = null
 
-        if (authorizationHeader != "" && authorizationHeader.startsWith("Bearer")) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
             jwt = authorizationHeader.substring(7)
             username = jwtUtil.extractUserName(jwt)
         }
 
-        if (username !== "" && SecurityContextHolder.getContext().authentication == null) {
+        if (username !== null && SecurityContextHolder.getContext().authentication == null) {
             val userDetails: UserDetails = userService.loadUserByUsername(username)
 
-            if (jwtUtil.validateToken(jwt, userDetails)) {
+            if (jwtUtil.validateToken(jwt!!, userDetails)) {
                 val usernamePasswordAuthenticationToken =
                     UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
 

@@ -1,15 +1,24 @@
 package com.example.api_atacadokt.controller
 
 import com.example.api_atacadokt.model.SystemUser
+import com.example.api_atacadokt.security.JwtUtil
 import com.example.api_atacadokt.service.SystemUserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 @RequestMapping("/user")
-class SystemUserController(val service: SystemUserService) {
+class SystemUserController(
+    val service: SystemUserService,
+    val authenticationManager: AuthenticationManager,
+    val jwtUtil: JwtUtil
+) {
 
     @GetMapping
     fun getAll(): ResponseEntity<Any> {
@@ -32,7 +41,21 @@ class SystemUserController(val service: SystemUserService) {
 
     @PostMapping("/login")
     fun login(@RequestBody systemUser: SystemUser): ResponseEntity<Any> {
-        return ResponseEntity.ok("ok")
+        try {
+            authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(
+                    systemUser.username,
+                    systemUser.password
+                )
+            )
+        } catch (e: BadCredentialsException) {
+            throw BadCredentialsException("usuario invalido")
+        }
+
+        val userDetails: UserDetails = service.loadUserByUsername(systemUser.username)
+        val jwt: String = jwtUtil.generateToken(userDetails)
+
+        return ResponseEntity.ok(SystemUser(jwt).jwt)
     }
 
     @PutMapping
