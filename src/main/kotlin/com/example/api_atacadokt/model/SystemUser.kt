@@ -1,13 +1,14 @@
 package com.example.api_atacadokt.model
 
 import jakarta.persistence.*
-import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 import org.jetbrains.annotations.NotNull
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
 @Entity
-class SystemUser  {
+class SystemUser : UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
@@ -24,32 +25,38 @@ class SystemUser  {
     @NotNull
     var systemUserRole: SystemUserRoles? = null
 
-  //  override fun getAuthorities(): MutableSet<SimpleGrantedAuthority> {
-  //      val grantedAuthority: SimpleGrantedAuthority = SimpleGrantedAuthority(systemUserRole!!.name)
-  //      return Collections.singleton(grantedAuthority)
-  //  }
-//
-  //  override fun getPassword(): String {
-  //      return this.password;
-  //  }
-//
-  //  override fun getUsername(): String {
-  //      return this.username
-  //  }
-//
-  //  override fun isAccountNonExpired(): Boolean {
-  //      return true;
-  //  }
-//
-  //  override fun isAccountNonLocked(): Boolean {
-  //      return true;
-  //  }
-//
-  //  override fun isCredentialsNonExpired(): Boolean {
-  //      return true;
-  //  }
-//
-  //  override fun isEnabled(): Boolean {
-  //      return true;
-  //  }
+    override fun getAuthorities(): MutableSet<SimpleGrantedAuthority> {
+        val grantedAuthority: SimpleGrantedAuthority = SimpleGrantedAuthority(systemUserRole!!.name)
+        return Collections.singleton(grantedAuthority)
+    }
+
+    //
+    override fun getPassword(): String {
+        return this.password;
+    }
+
+    //
+    override fun getUsername(): String {
+        return this.username
+    }
+
+    //
+    override fun isAccountNonExpired(): Boolean {
+        return true;
+    }
+
+    //
+    override fun isAccountNonLocked(): Boolean {
+        return true;
+    }
+
+    //
+    override fun isCredentialsNonExpired(): Boolean {
+        return true;
+    }
+
+    //
+    override fun isEnabled(): Boolean {
+        return true;
+    }
 }
