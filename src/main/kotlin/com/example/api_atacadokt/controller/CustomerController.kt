@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("cliente")
+@RequestMapping("/cliente")
 class CustomerController(val service: CustomerService) {
 
     @GetMapping

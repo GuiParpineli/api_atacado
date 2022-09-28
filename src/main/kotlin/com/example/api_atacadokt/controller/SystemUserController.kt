@@ -22,10 +22,10 @@ class SystemUserController(
 
     @GetMapping
     fun getAll(): ResponseEntity<Any> {
-        val SystemUserList: List<SystemUser> = service.getAll()
-        if (SystemUserList.isEmpty())
+        val systemUserList: List<SystemUser> = service.getAll()
+        if (systemUserList.isEmpty())
             return ResponseEntity("Nenhum cliente cadastrado", HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(SystemUserList)
+        return ResponseEntity.ok(systemUserList)
     }
 
     @GetMapping("buscarId")

@@ -42,6 +42,10 @@ class SecurityConfiguration(val unauthorizedHandler: JwtRequestFilter, var userD
     fun configure(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
             .authorizeHttpRequests()
+            .antMatchers("/swagger-ui/**").permitAll()
+            .antMatchers("/v3/api-docs/**").permitAll()
+            .and()
+            .authorizeHttpRequests()
             .antMatchers("/user/login").permitAll()
             .antMatchers("/produto/**").hasAnyRole("ADMIN", "VENDOR")
             .anyRequest().authenticated().and()
