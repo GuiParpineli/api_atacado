@@ -8,8 +8,10 @@ data class Customer(
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     var id: Long? = null,
-    var cnpj : String = "",
-    var razaoSocial : String = "",
-    var nomeFantasia : String = "",
-    var email : String  = ""
+    var cnpj: String = "",
+    var razaoSocial: String = "",
+    var nomeFantasia: String = "",
+    var email: String = "",
+    var password: String = ""
 )
+
