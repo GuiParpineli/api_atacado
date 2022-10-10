@@ -7,10 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/cliente")
@@ -28,4 +26,23 @@ class CustomerController(val service: CustomerService) {
         return ResponseEntity.ok(customerDTO)
     }
 
+    @GetMapping("buscarId")
+    fun get(@RequestParam("id") id: Long): Any {
+        val saved: Optional<Customer> = service.get(id)
+        if (saved.isEmpty)
+            return ResponseEntity("Nenhum Usuario encontrado", HttpStatus.NOT_FOUND)
+        return ResponseEntity.ok(saved)
+    }
+
+    @PostMapping("/cadastrar")
+    fun save(@RequestBody Customer: Customer) : ResponseEntity<Any> {
+        val c : Customer  = service.save(Customer)
+        return ResponseEntity.ok(c)
+    }
+
+    @PutMapping
+    fun update(@RequestBody Customer: Customer) = service.update(Customer)
+
+    @DeleteMapping
+    fun delete(@RequestParam("id") id: Long) = service.delete(id)
 }
