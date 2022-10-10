@@ -15,24 +15,20 @@ import java.util.*
 @RestController
 @RequestMapping("/user")
 class SystemUserController(
-    val service: SystemUserService,
-    val authenticationManager: AuthenticationManager,
-    val jwtUtil: JwtUtil
+    val service: SystemUserService, val authenticationManager: AuthenticationManager, val jwtUtil: JwtUtil
 ) {
 
     @GetMapping
     fun getAll(): ResponseEntity<Any> {
         val systemUserList: List<SystemUser> = service.getAll()
-        if (systemUserList.isEmpty())
-            return ResponseEntity("Nenhum cliente cadastrado", HttpStatus.NOT_FOUND)
+        if (systemUserList.isEmpty()) return ResponseEntity("Nenhum cliente cadastrado", HttpStatus.NOT_FOUND)
         return ResponseEntity.ok(systemUserList)
     }
 
     @GetMapping("buscarId")
     fun get(@RequestParam("id") id: Long): Any {
         val saved: Optional<SystemUser> = service.get(id)
-        if (saved.isEmpty)
-            return ResponseEntity("Nenhum Usuario encontrado", HttpStatus.NOT_FOUND)
+        if (saved.isEmpty) return ResponseEntity("Nenhum Usuario encontrado", HttpStatus.NOT_FOUND)
         return ResponseEntity.ok(saved)
     }
 
@@ -44,8 +40,7 @@ class SystemUserController(
         try {
             authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(
-                    systemUser.username,
-                    systemUser.password
+                    systemUser.username, systemUser.password
                 )
             )
         } catch (e: BadCredentialsException) {
