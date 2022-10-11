@@ -20,7 +20,6 @@ class CustomerService(val repository: CustomerRepository, val userRepository: Sy
         userRepository.save(
             SystemUser(
                 null,
-                null,
                 customer.razaoSocial,
                 customer.nomeFantasia,
                 customer.email,

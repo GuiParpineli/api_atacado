@@ -12,18 +12,19 @@ data class SystemUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    var jwt: String? = "",
     var name: String = "",
     private var username: String = "",
     @Column(nullable = false, unique = true)
     var email: String = "",
-
     @Size(min = 3, max = 8)
     private var password: String = "",
 
     @Enumerated(EnumType.STRING)
-    var systemUserRole: SystemUserRoles? = null
+    var systemUserRole: SystemUserRoles? = null,
+
 ) : UserDetails {
+
+    var jwt: String? = ""
     constructor(jwt: String) : this(){
         this.jwt = jwt
     }

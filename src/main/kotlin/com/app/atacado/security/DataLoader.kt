@@ -14,7 +14,7 @@ class DataLoader(val userRepository: SystemUserRepository) : ApplicationRunner {
     override fun run(args: ApplicationArguments?) {
         val bCryptPasswordEncoder = BCryptPasswordEncoder();
         val userAdmin = SystemUser(
-            1, null, "admin", "admin", "admin@email.com",
+            1,  "admin", "admin", "admin@email.com",
             bCryptPasswordEncoder.encode("admin"),
             SystemUserRoles.ROLE_ADMIN
         );

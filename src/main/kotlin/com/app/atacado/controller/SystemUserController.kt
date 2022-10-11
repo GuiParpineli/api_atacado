@@ -1,5 +1,7 @@
 package com.app.atacado.controller
 
+import com.app.atacado.exceptions.UserLoginException
+import com.app.atacado.exceptions.UserSaveException
 import com.app.atacado.model.SystemUser
 import com.app.atacado.security.JwtUtil
 import com.app.atacado.service.SystemUserService
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import kotlin.jvm.Throws
 
 @RestController
 @RequestMapping("/user")
@@ -32,10 +35,20 @@ class SystemUserController(
         return ResponseEntity.ok(saved)
     }
 
+    @Throws(UserSaveException::class)
     @PostMapping("/cadastrar")
-    fun save(@RequestBody systemUser: SystemUser) = service.save(systemUser)
+    fun save(@RequestBody systemUser: SystemUser) : ResponseEntity<Any>{
+        val user : SystemUser
+        try {
+            user = service.save(systemUser)
+        } catch (e: Exception) {
+            throw UserSaveException("Não foi possivel salvar o usuario, tente novamente")
+        }
+        return ResponseEntity.ok(user)
+    }
 
     @PostMapping("/login")
+    @Throws(UserLoginException::class)
     fun login(@RequestBody systemUser: SystemUser): ResponseEntity<Any> {
         try {
             authenticationManager.authenticate(
@@ -43,8 +56,8 @@ class SystemUserController(
                     systemUser.username, systemUser.password
                 )
             )
-        } catch (e: BadCredentialsException) {
-            throw BadCredentialsException("usuario invalido")
+        } catch (e: Exception) {
+            throw UserLoginException("Usuario ou senha invalidos")
         }
 
         val userDetails: UserDetails = service.loadUserByUsername(systemUser.username)
