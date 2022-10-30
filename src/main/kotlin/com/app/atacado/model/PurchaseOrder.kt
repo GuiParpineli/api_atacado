@@ -1,7 +1,8 @@
 package com.app.atacado.model
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import java.util.Date
+import org.springframework.format.annotation.DateTimeFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
 
@@ -26,5 +27,7 @@ data class PurchaseOrder(
     @ManyToOne
     val customer: Customer = Customer(),
 
-    val date: Date = Date()
+    @DateTimeFormat(pattern = "dd-mm-yyyy")
+    val date: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.YYYY HH:mm:ss"))
+
 )
