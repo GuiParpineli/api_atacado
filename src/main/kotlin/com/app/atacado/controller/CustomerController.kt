@@ -35,8 +35,8 @@ class CustomerController(val service: CustomerService) {
     }
 
     @PostMapping("/cadastrar")
-    fun save(@RequestBody Customer: Customer) : ResponseEntity<Any> {
-        val c : Customer  = service.save(Customer)
+    fun save(@RequestBody Customer: Customer): ResponseEntity<Any> {
+        val c: Customer = service.save(Customer)
         return ResponseEntity.ok(c)
     }
 

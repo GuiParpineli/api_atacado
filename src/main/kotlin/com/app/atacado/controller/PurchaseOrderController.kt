@@ -18,7 +18,7 @@ class PurchaseOrderController(val service: PurchaseOrderService) {
         return ResponseEntity.ok(purchaseOrderList)
     }
 
-    @GetMapping("buscarId")
+    @GetMapping("buscar")
     fun get(@RequestParam("id") id: Long): Any {
         val saved: Optional<PurchaseOrder> = service.get(id)
         if (saved.isEmpty)

@@ -1,6 +1,7 @@
 package com.app.atacado.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import java.util.Date
 import javax.persistence.*
 
 
@@ -11,12 +12,19 @@ data class PurchaseOrder(
     @Column(name = "id", nullable = false)
     val id: Long? = null,
 
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "order_product",
         joinColumns = [JoinColumn(name = "id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "id_product", referencedColumnName = "id")]
     )
-    @JsonIgnoreProperties("Product")
-    val product: List<Product> = mutableListOf()
+    val product: List<Product> = mutableListOf(),
+
+    @ManyToOne
+    val vendor: Vendor = Vendor(),
+
+    @ManyToOne
+    val customer: Customer = Customer(),
+
+    val date: Date = Date()
 )
