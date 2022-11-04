@@ -6,6 +6,7 @@ import com.app.atacado.model.SystemUser
 import com.app.atacado.security.JwtUtil
 import com.app.atacado.service.SystemUserService
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
@@ -16,7 +17,7 @@ import java.util.*
 import kotlin.jvm.Throws
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user", produces = [MediaType.APPLICATION_JSON_VALUE])
 class SystemUserController(
     val service: SystemUserService, val authenticationManager: AuthenticationManager, val jwtUtil: JwtUtil
 ) {

@@ -3,12 +3,13 @@ package com.app.atacado.controller
 import com.app.atacado.model.PurchaseOrder
 import com.app.atacado.service.PurchaseOrderService
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/pedido")
+@RequestMapping("/pedido", produces = [MediaType.APPLICATION_JSON_VALUE])
 class PurchaseOrderController(val service: PurchaseOrderService) {
     @GetMapping
     fun getAll(): ResponseEntity<Any> {

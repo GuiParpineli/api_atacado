@@ -6,12 +6,13 @@ import com.app.atacado.service.VendorService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/vendedor")
+@RequestMapping("/vendedor", produces = [MediaType.APPLICATION_JSON_VALUE])
 class VendorController(val service: VendorService) {
 
     @GetMapping

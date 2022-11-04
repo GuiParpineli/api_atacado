@@ -3,6 +3,7 @@ package com.app.atacado.controller
 import com.app.atacado.model.Product
 import com.app.atacado.service.ProductService
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.Optional
 
 @RestController
-@RequestMapping("/produto")
+@RequestMapping("/produto", produces = [MediaType.APPLICATION_JSON_VALUE])
 class ProductController(val service: ProductService) {
 
     @GetMapping

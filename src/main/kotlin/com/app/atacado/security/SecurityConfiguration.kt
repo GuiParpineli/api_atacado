@@ -20,7 +20,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity
 class SecurityConfiguration(val jwtRequestFilter: JwtRequestFilter, var userDetailsService: UserDetailsService) {
 
-
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
@@ -29,7 +28,7 @@ class SecurityConfiguration(val jwtRequestFilter: JwtRequestFilter, var userDeta
     @Bean
     @Throws(Exception::class)
     fun authenticationManagerBean(http: HttpSecurity): AuthenticationManager {
-        var authenticationManagerBuilder: AuthenticationManagerBuilder =
+        val authenticationManagerBuilder: AuthenticationManagerBuilder =
             http.getSharedObject(AuthenticationManagerBuilder::class.java)
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
         return authenticationManagerBuilder.build()
@@ -40,8 +39,7 @@ class SecurityConfiguration(val jwtRequestFilter: JwtRequestFilter, var userDeta
     fun configure(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
             .authorizeHttpRequests()
-            .antMatchers("/swagger-ui/**").permitAll()
-            .antMatchers("/v3/api-docs/**").permitAll()
+            .antMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
             .and()
             .authorizeHttpRequests()
             .antMatchers("/user/login").permitAll()
