@@ -12,16 +12,11 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.util.*
-import kotlin.jvm.optionals.getOrNull
 
 @Service
-class VendorService(val repository: VendorRepository, val userRepository: SystemUserRepository) {
-
-    val mapper = ObjectMapper()
+class VendorService(val repository: VendorRepository, val userRepository: SystemUserRepository, val mapper:ObjectMapper) {
 
     fun getAll(): ResponseEntity<Any> {
-        repository.findAll()
         val vendorList: List<Vendor> = repository.findAll()
         if (vendorList.isEmpty()) ResponseEntity("Nenhum cliente cadastrado", HttpStatus.NOT_FOUND)
         val vendorDTOlist: MutableList<VendorDTO> = mutableListOf()
@@ -30,37 +25,21 @@ class VendorService(val repository: VendorRepository, val userRepository: System
     }
 
     fun get(id: Long): ResponseEntity<Any> {
-        val vendorDTO: VendorDTO
-        val saved: Vendor = repository.findById(id).orElseThrow {
-            UserLoginException(
-                "Nenhum Vendedor com o id " +
-                        "informado"
-            )
-        }
-        vendorDTO = mapper.convertValue(saved)
+        val saved: Vendor =
+            repository.findById(id).orElseThrow { UserLoginException("Nenhum Vendedor com o id informado") }
+        val vendorDTO: VendorDTO = mapper.convertValue(saved)
         return ResponseEntity.ok(vendorDTO)
     }
 
     fun save(vendor: Vendor): Vendor {
         userRepository.save(
-            SystemUser(
-                null,
-                vendor.name,
-                vendor.lastname,
-                vendor.cpf,
-                vendor.password,
-                SystemUserRoles.ROLE_VENDOR
-            )
+            SystemUser( null, vendor.name, vendor.lastname, vendor.cpf, vendor.password, SystemUserRoles.ROLE_VENDOR )
         )
         return repository.save(vendor)
     }
 
-    fun update(Vendor: Vendor): Vendor {
-        return repository.saveAndFlush(Vendor)
-    }
+    fun update(Vendor: Vendor): Vendor { return repository.saveAndFlush(Vendor) }
 
-    fun delete(id: Long) {
-        return repository.deleteById(id)
-    }
+    fun delete(id: Long) { return repository.deleteById(id) }
 
 }
