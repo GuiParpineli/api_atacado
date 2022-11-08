@@ -1,5 +1,6 @@
 package com.app.atacado.service
 
+import com.app.atacado.exceptions.ResourceNotFoundException
 import com.app.atacado.exceptions.UserLoginException
 import com.app.atacado.model.SystemUser
 import com.app.atacado.model.SystemUserRoles
@@ -26,7 +27,7 @@ class VendorService(val repository: VendorRepository, val userRepository: System
 
     fun get(id: Long): ResponseEntity<Any> {
         val saved: Vendor =
-            repository.findById(id).orElseThrow { UserLoginException("Nenhum Vendedor com o id informado") }
+            repository.findById(id).orElseThrow { ResourceNotFoundException("Nenhum Vendedor com o id informado") }
         val vendorDTO: VendorDTO = mapper.convertValue(saved)
         return ResponseEntity.ok(vendorDTO)
     }

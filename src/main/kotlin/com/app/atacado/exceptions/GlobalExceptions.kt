@@ -13,7 +13,11 @@ class GlobalExceptions {
         ResponseEntity(ex.message, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler
-    fun processUsersave(ex : UserSaveException): ResponseEntity<String> =
-        ResponseEntity(ex.message,HttpStatus.BAD_REQUEST)
+    fun processUsersave(ex: UserSaveException): ResponseEntity<String> =
+        ResponseEntity(ex.message, HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler
+    fun processResourceNotFound(ex: ResourceNotFoundException): ResponseEntity<String> =
+        ResponseEntity(ex.message, HttpStatus.BAD_REQUEST)
 
 }
