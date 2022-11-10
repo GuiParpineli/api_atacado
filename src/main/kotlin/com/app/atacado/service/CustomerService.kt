@@ -11,9 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
-import java.util.Optional
 
 @Service
 class CustomerService(
@@ -26,7 +24,7 @@ class CustomerService(
         val customerList: List<Customer> = repository.findAll()
         if (customerList.isEmpty()) ResponseEntity("Nenhum cliente cadastrado", HttpStatus.NOT_FOUND)
         val customerDTO: MutableList<CustomerDTO> = mutableListOf()
-        for (c: Customer in customerList) customerDTO.add(mapper.convertValue(c))
+        customerList.forEach { c ->  customerDTO.add(mapper.convertValue(c))}
         return ResponseEntity.ok(customerDTO)
     }
 
@@ -40,7 +38,8 @@ class CustomerService(
     fun save(customer: Customer): ResponseEntity<Any> {
         val saved = repository.save(customer)
         userRepository.save(
-            SystemUser( null, customer.razaoSocial, customer.nomeFantasia, customer.email, customer.password, SystemUserRoles.ROLE_CUSTOMER )
+            SystemUser( null, customer.razaoSocial, customer.nomeFantasia, customer.email,
+                customer.password, SystemUserRoles.ROLE_CUSTOMER )
         )
         return ResponseEntity.ok(saved)
     }

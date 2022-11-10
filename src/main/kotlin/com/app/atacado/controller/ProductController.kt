@@ -23,13 +23,7 @@ class ProductController(val service: ProductService) {
     fun getAll() = service.getAll()
 
     @GetMapping("buscarId")
-    fun get(@RequestParam("id") id: Long): ResponseEntity<Any> {
-        val saved: Optional<Product> = service.get(id)
-        if (saved.isEmpty)
-            return ResponseEntity("Nenhum Usuario encontrado", HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(saved)
-
-    }
+    fun get(@RequestParam("id") id: Long) = service.get(id)
 
     @PostMapping("/cadastrar")
     fun save(@RequestBody product: Product) = service.save(product)

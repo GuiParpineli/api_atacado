@@ -1,23 +1,28 @@
 package com.app.atacado.service
 
+import com.app.atacado.exceptions.ResourceNotFoundException
 import com.app.atacado.model.Product
 import com.app.atacado.repository.ProductRepository
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class ProductService(val repository: ProductRepository) {
 
-    fun getAll(): List<Product> {
-        return repository.findAll()
+    fun getAll(): List<Product> = repository.findAll()
+
+    fun get(id: Long): ResponseEntity<Any> {
+        val saved = repository.findById(id).orElseThrow {
+            ResourceNotFoundException("Nenhum Produto com id informado")
+        }
+        return ResponseEntity.ok(saved)
     }
 
-    fun get(id: Long): Optional<Product> {
-        return repository.findById(id)
-    }
-
-    fun save(product: Product): Product {
-        return repository.save(product)
+    fun save(product: Product): ResponseEntity<Any> {
+        val saved = repository.save(product)
+        return ResponseEntity.ok(saved)
     }
 
     fun update(product: Product): Product {

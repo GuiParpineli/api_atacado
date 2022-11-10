@@ -1,7 +1,6 @@
 package com.app.atacado.service
 
 import com.app.atacado.exceptions.ResourceNotFoundException
-import com.app.atacado.exceptions.UserLoginException
 import com.app.atacado.model.SystemUser
 import com.app.atacado.model.SystemUserRoles
 import com.app.atacado.model.Vendor
@@ -21,7 +20,7 @@ class VendorService(val repository: VendorRepository, val userRepository: System
         val vendorList: List<Vendor> = repository.findAll()
         if (vendorList.isEmpty()) ResponseEntity("Nenhum cliente cadastrado", HttpStatus.NOT_FOUND)
         val vendorDTOlist: MutableList<VendorDTO> = mutableListOf()
-        for (c: Vendor in vendorList) vendorDTOlist.add(mapper.convertValue(c))
+        vendorList.forEach { v -> vendorDTOlist.add(mapper.convertValue(v)) }
         return ResponseEntity.ok(vendorDTOlist)
     }
 
@@ -34,7 +33,8 @@ class VendorService(val repository: VendorRepository, val userRepository: System
 
     fun save(vendor: Vendor): Vendor {
         userRepository.save(
-            SystemUser( null, vendor.name, vendor.lastname, vendor.cpf, vendor.password, SystemUserRoles.ROLE_VENDOR )
+            SystemUser( null, vendor.name, vendor.lastname, vendor.cpf,
+                vendor.password, SystemUserRoles.ROLE_VENDOR )
         )
         return repository.save(vendor)
     }
