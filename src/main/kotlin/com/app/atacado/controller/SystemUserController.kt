@@ -23,47 +23,24 @@ class SystemUserController(
 ) {
 
     @GetMapping
-    fun getAll(): ResponseEntity<Any> {
-        val systemUserList: List<SystemUser> = service.getAll()
-        if (systemUserList.isEmpty()) return ResponseEntity("Nenhum cliente cadastrado", HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(systemUserList)
-    }
+    fun getAll() = service.getAll()
 
     @GetMapping("buscarId")
-    fun get(@RequestParam("id") id: Long): Any {
-        val saved: Optional<SystemUser> = service.get(id)
-        if (saved.isEmpty) return ResponseEntity("Nenhum Usuario encontrado", HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(saved)
-    }
+    fun get(@RequestParam("id") id: Long) = service.get(id)
 
-    @Throws(UserSaveException::class)
     @PostMapping("/cadastrar")
-    fun save(@RequestBody systemUser: SystemUser) : ResponseEntity<Any>{
-        val user : SystemUser
-        try {
-            user = service.save(systemUser)
-        } catch (e: Exception) {
-            throw UserSaveException("Não foi possivel salvar o usuario, tente novamente")
-        }
-        return ResponseEntity.ok(user)
-    }
+    fun save(@RequestBody systemUser: SystemUser) = service.save(systemUser)
 
     @PostMapping("/login")
     @Throws(UserLoginException::class)
     fun login(@RequestBody systemUser: SystemUser): ResponseEntity<Any> {
         try {
             authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(
-                    systemUser.username, systemUser.password
-                )
+                UsernamePasswordAuthenticationToken(systemUser.username, systemUser.password)
             )
-        } catch (e: Exception) {
-            throw UserLoginException("Usuario ou senha invalidos")
-        }
-
+        } catch (e: Exception) { throw UserLoginException("Usuario ou senha invalidos") }
         val userDetails: UserDetails = service.loadUserByUsername(systemUser.username)
         val jwt: String = jwtUtil.generateToken(userDetails)
-
         return ResponseEntity.ok(SystemUser(jwt).jwt)
     }
 

@@ -3,10 +3,8 @@ package com.app.atacado.service
 import com.app.atacado.exceptions.ResourceNotFoundException
 import com.app.atacado.model.Product
 import com.app.atacado.repository.ProductRepository
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class ProductService(val repository: ProductRepository) {
