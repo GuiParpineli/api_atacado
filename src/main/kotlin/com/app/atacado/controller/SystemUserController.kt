@@ -17,7 +17,7 @@ import java.util.*
 import kotlin.jvm.Throws
 
 @RestController
-@RequestMapping("/user", produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping("/systemuser", produces = [MediaType.APPLICATION_JSON_VALUE])
 class SystemUserController(
     val service: SystemUserService, val authenticationManager: AuthenticationManager, val jwtUtil: JwtUtil
 ) {
