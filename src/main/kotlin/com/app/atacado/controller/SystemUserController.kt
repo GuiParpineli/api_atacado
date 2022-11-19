@@ -34,11 +34,15 @@ class SystemUserController(
     @PostMapping("/login")
     @Throws(UserLoginException::class)
     fun login(@RequestBody systemUser: SystemUser): ResponseEntity<Any> {
+
         try {
             authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(systemUser.username, systemUser.password)
             )
-        } catch (e: Exception) { throw UserLoginException("Usuario ou senha invalidos") }
+        } catch (e: Exception) {
+            throw UserLoginException("Usuario ou senha invalidos")
+        }
+
         val userDetails: UserDetails = service.loadUserByUsername(systemUser.username)
         val jwt: String = jwtUtil.generateToken(userDetails)
         return ResponseEntity.ok(SystemUser(jwt).jwt)

@@ -1,8 +1,8 @@
 package com.app.atacado.repository
 
-import com.app.atacado.model.Customer
+import com.app.atacado.model.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface CustomerRepository : JpaRepository<Customer, Long>
+interface UserRepository: JpaRepository<User, Long>
